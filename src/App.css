@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: raleway;
 }
 
 .App-logo {
@@ -28,11 +29,40 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input {
+  width: 15vw;
+  height: 1.8vmax;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: black;
+}
+
+.container {
+  width: 95%;
+  display: flex;
+}
+
+.column {
+  margin-left: 1vw;
+  margin-right: 1vw;
+  border-color: black;
+  border-width: 1px;
+}
+
+.column-1 {
+  flex: 1;
+}
+
+.column-2 {
+  flex: 2;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
 }
