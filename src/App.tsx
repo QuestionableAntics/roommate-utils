@@ -7,8 +7,15 @@ const App = () => {
   let [amerenGasCost, setAmerenGasCost] = useState(0);
   let [mediacomCost, setMediacomCost] = useState(69.99);
   let [columbiaUtilities, setColumbiaUtilities] = useState(0);
+  let [activeMonth, setActiveMonth] = useState(0)
   let [useDecimal, setUseDecimal] = useState<{[id: string] : boolean}>({});
   
+  if (activeMonth) {
+    amerenGasCost = monthCosts[activeMonth].amerenCost;
+    mediacomCost = monthCosts[activeMonth].mediacomCost;
+    columbiaUtilities = monthCosts[activeMonth].columbiaUtilities;
+  }
+
   let totalUtilityCost = (amerenGasCost ?? 0) + (mediacomCost ?? 0) + (columbiaUtilities ?? 0);
 
   let amerenPercentage = amerenGasCost / totalUtilityCost;
@@ -114,7 +121,12 @@ const App = () => {
             <input value={displayFloat(mediacomCost, "mediacom")} onChange={e => setFloatProp(e.target.value, setMediacomCost, "mediacom")}></input>
             <br/>
             <div>Columbia Utilities</div>
-            <input value={displayFloat(columbiaUtilities, "como")} onChange={e => setFloatProp(e.target.value, setColumbiaUtilities, "como")}></input>        
+            <input value={displayFloat(columbiaUtilities, "como")} onChange={e => setFloatProp(e.target.value, setColumbiaUtilities, "como")}></input>      
+            <br/>
+            <div>Select Month</div>  
+            <select onChange={e => setActiveMonth(parseInt(e.target.value))}>
+              { monthCosts.map( ( month ) => <option value={month.id} key={month.id}>{month.date}</option>)}
+            </select>
           </div>
           <div className="column column-2 align-left">
             <div>{amerenPercentageDisplay.toFixed(2)}% - Ameren %</div>
@@ -129,11 +141,26 @@ const App = () => {
 
 export default App;
 
-const monthCosts: [{date: string, amerenCost: number, mediacomCost: number, columbiaUtilities: number}] = [
+const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomCost: number, columbiaUtilities: number}> = [
   {
+    id: 0,
+    date: "Manual",
+    amerenCost: 0,
+    mediacomCost: 0,
+    columbiaUtilities: 0
+  },
+  {
+    id: 1,
     date: "April, 2020",
     amerenCost: 44.63,
     mediacomCost: 69.99,
     columbiaUtilities: 157.27
+  },
+  {
+    id: 2,
+    date: "May, 2020",
+    amerenCost: 29.81,
+    mediacomCost: 69.99,
+    columbiaUtilities: 198.94
   }
 ]
