@@ -125,7 +125,7 @@ const App = () => {
             <br/>
             <div>Select Month</div>  
             <select onChange={e => setActiveMonth(parseInt(e.target.value))}>
-              { monthCosts.map( ( month ) => <option value={month.id} key={month.id}>{month.date}</option>)}
+              { monthCosts.map( month => <option value={month.id} key={month.id}>{month.date}</option>)}
             </select>
           </div>
           <div className="column column-2 align-left">
@@ -162,5 +162,12 @@ const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomC
     amerenCost: 29.81,
     mediacomCost: 69.99,
     columbiaUtilities: 198.94
+  },
+  {
+    id: 3,
+    date: "June, 2020",
+    amerenCost: 26.73,
+    mediacomCost: 69.99,
+    columbiaUtilities: 293.70
   }
 ]
