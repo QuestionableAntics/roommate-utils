@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+// import BarChart from 'recharts';
 import './App.css';
 
 const App = () => {
@@ -10,12 +12,14 @@ const App = () => {
   let [activeMonth, setActiveMonth] = useState(0)
   let [useDecimal, setUseDecimal] = useState<{[id: string] : boolean}>({});
   
-  if (activeMonth) {
-    amerenGasCost = monthCosts[activeMonth].amerenCost;
-    mediacomCost = monthCosts[activeMonth].mediacomCost;
-    columbiaUtilities = monthCosts[activeMonth].columbiaUtilities;
-  }
+  useEffect(() => {
+    setAmerenGasCost(monthCosts[activeMonth].amerenCost);
+    setMediacomCost(monthCosts[activeMonth].mediacomCost)
+    setColumbiaUtilities(monthCosts[activeMonth].columbiaUtilities);
+    setTimesMowed(monthCosts[activeMonth].timesMowed);
+  }, [activeMonth])
 
+ 
   let totalUtilityCost = (amerenGasCost ?? 0) + (mediacomCost ?? 0) + (columbiaUtilities ?? 0);
 
   let amerenPercentage = amerenGasCost / totalUtilityCost;
@@ -53,7 +57,9 @@ const App = () => {
         [key]: false
       })
     }
+
     const parsed = parseFloat(prop);
+
     if (!!parsed || parsed === 0) {
       fn(parsed);
     }
@@ -132,6 +138,8 @@ const App = () => {
             <div>{amerenPercentageDisplay.toFixed(2)}% - Ameren %</div>
             <div>{mediacomPercentageDisplay.toFixed(2)}% - Mediacom %</div>
             <div>{columbiaPercentageDisplay.toFixed(2)}% - Columbia Utilities %</div>
+            <hr/>
+            <Chart />
           </div>
         </div>
       </header>
@@ -139,49 +147,121 @@ const App = () => {
   );
 }
 
+const Chart = () => {
+  const [shownChart, setShownChart] = useState(ChartType.Bar);
+  const data = monthCosts.map(m => {
+    return {
+      ...m,
+      totalCost: m.amerenCost + m.columbiaUtilities + m.mediacomCost
+    }
+  })
+  const chartHeight = 500;
+  const chartWidth = 1000;
+
+  const renderChart = () => {
+    switch (shownChart) {
+      case ChartType.Bar:
+        return (
+          <BarChart height={chartHeight} width={chartWidth} data={data.filter(mc => mc.id > 0)}>
+            <CartesianGrid strokeDasharray="4 4" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar name="Ameren Cost" dataKey="amerenCost" fill="#8884d8" />
+            <Bar name="Mediacom Cost" dataKey="mediacomCost" fill="#82ca9d" />
+            <Bar name="Columbia Utilities" dataKey="columbiaUtilities" fill="#eb9534" />
+            <Bar name="Total" dataKey="totalCost" fill="#3281a8" />
+          </BarChart>
+        );
+      case ChartType.Line:
+      default:
+        return (
+          <LineChart height={chartHeight} width={chartWidth} data={data.filter(mc => mc.id > 0)} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" name="Ameren Cost" dataKey="amerenCost" fill="#8884d8" />
+            <Line type="monotone" name="Mediacom Cost" dataKey="mediacomCost" fill="#82ca9d" />
+            <Line type="monotone" name="Columbia Utilities" dataKey="columbiaUtilities" fill="#eb9534" />
+            <Line type="monotone" name="Total" dataKey="totalCost" fill="#3281a8" />
+          </LineChart>
+        );
+    }
+  }
+
+  return (
+    <>
+      <button onClick={() => setShownChart(shownChart === ChartType.Bar ? ChartType.Line : ChartType.Bar)}>Toggle Chart</button>
+      {renderChart()}
+    </>
+  )
+}
+
 export default App;
 
-const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomCost: number, columbiaUtilities: number}> = [
+const ChartType = {
+  Bar: 1,
+  Line: 2
+}
+
+const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomCost: number, columbiaUtilities: number, timesMowed: number}> = [
   {
     id: 0,
     date: "Manual",
     amerenCost: 0,
     mediacomCost: 0,
-    columbiaUtilities: 0
+    columbiaUtilities: 0,
+    timesMowed: 2
   },
   {
     id: 1,
     date: "April, 2020",
     amerenCost: 44.63,
     mediacomCost: 69.99,
-    columbiaUtilities: 157.27
+    columbiaUtilities: 157.27,
+    timesMowed: 2
   },
   {
     id: 2,
     date: "May, 2020",
     amerenCost: 29.81,
     mediacomCost: 69.99,
-    columbiaUtilities: 198.94
+    columbiaUtilities: 198.94,
+    timesMowed: 2
   },
   {
     id: 3,
     date: "June, 2020",
     amerenCost: 26.73,
     mediacomCost: 69.99,
-    columbiaUtilities: 293.70
+    columbiaUtilities: 293.70,
+    timesMowed: 2
   },
   {
     id: 4,
     date: "July, 2020",
     amerenCost: 25.64,
     mediacomCost: 69.99,
-    columbiaUtilities: 294.49
+    columbiaUtilities: 294.49,
+    timesMowed: 2
   },
   {
     id: 5,
     date: "August, 2020",
     amerenCost: 26.00,
     mediacomCost: 69.99,
-    columbiaUtilities: 299.09
+    columbiaUtilities: 299.09,
+    timesMowed: 2
+  },
+  {
+    id: 6,
+    date: "September, 2020",
+    amerenCost: 27.45,
+    mediacomCost: 89.99,
+    columbiaUtilities: 195.45,
+    timesMowed: 1
   }
 ]
