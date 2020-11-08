@@ -263,5 +263,13 @@ const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomC
     mediacomCost: 89.99,
     columbiaUtilities: 195.45,
     timesMowed: 1
+  },
+  {
+    id: 7,
+    date: "October, 2020",
+    amerenCost: 31.84,
+    mediacomCost: 89.99,
+    columbiaUtilities: undefined,
+    timesMowed: 1
   }
 ]
