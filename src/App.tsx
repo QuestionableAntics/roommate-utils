@@ -114,6 +114,10 @@ const App = () => {
             <div>Other Columbia Utilities - ${otherColumbia.toFixed(2)}</div>
           </div>
           <div className="column column-1">
+            <h4>Average Utilities Cost</h4>
+            <div>{(monthCosts.reduce( (acc, curr) => curr.amerenCost + curr.columbiaUtilities + curr.mediacomCost + acc, 0 ) / monthCosts.length).toFixed(2)}</div>
+            <br/>
+            <br/>
             <div>Times mowed</div>
             <input value={timesMowed} onChange={e => setIntProp(e.target.value, setTimesMowed)}></input>
             <br/>
@@ -278,6 +282,22 @@ const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomC
     amerenCost: 52.26,
     mediacomCost: 89.99,
     columbiaUtilities: 178.58,
+    timesMowed: 0
+  },
+  {
+    id: 9,
+    date: "December, 2020",
+    amerenCost: 49.11,
+    mediacomCost: 89.99,
+    columbiaUtilities: 309.86,
+    timesMowed: 0
+  },
+  {
+    id: 10,
+    date: "January, 2021",
+    amerenCost: 68.53,
+    mediacomCost: 89.99,
+    columbiaUtilities: 0,
     timesMowed: 0
   }
 ]
