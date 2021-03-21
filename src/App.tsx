@@ -297,7 +297,7 @@ const monthCosts: Array<{id: number, date: string, amerenCost: number, mediacomC
     date: "January, 2021",
     amerenCost: 68.53,
     mediacomCost: 89.99,
-    columbiaUtilities: 0,
+    columbiaUtilities: 176.52,
     timesMowed: 0
   }
 ]
